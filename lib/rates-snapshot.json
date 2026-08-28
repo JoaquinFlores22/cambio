@@ -1,0 +1,94 @@
+{
+  "base": "USD",
+  "updated": 1787875351,
+  "source": "open.er-api.com",
+  "rates": {
+    "USD": 1,
+    "EUR": 0.858266,
+    "ARS": 1512.7498,
+    "BRL": 5.152001,
+    "CLP": 920.112211,
+    "UYU": 40.197285,
+    "PYG": 5989.322592,
+    "BOB": 11.546346,
+    "PEN": 3.351563,
+    "COP": 3114.717048,
+    "MXN": 16.966732,
+    "VES": 791.6667,
+    "GBP": 0.735818,
+    "JPY": 159.327232,
+    "CNY": 6.737174,
+    "CHF": 0.804244,
+    "CAD": 1.385755,
+    "AUD": 1.390408,
+    "NZD": 1.679719,
+    "SEK": 9.516809,
+    "NOK": 9.326462,
+    "DKK": 6.418152,
+    "ZAR": 15.988946,
+    "INR": 95.592676,
+    "KRW": 1381.567326,
+    "SGD": 1.271049,
+    "HKD": 7.839076,
+    "TRY": 48.162464,
+    "PLN": 3.717556,
+    "CZK": 20.716721,
+    "ILS": 2.968974,
+    "AED": 3.6725
+  },
+  "ar": {
+    "dolares": [
+      {
+        "casa": "oficial",
+        "nombre": "Oficial",
+        "compra": 1485,
+        "venta": 1535,
+        "fecha": "2026-08-27T18:00:00.000Z"
+      },
+      {
+        "casa": "blue",
+        "nombre": "Blue",
+        "compra": 1535,
+        "venta": 1555,
+        "fecha": "2026-08-27T20:56:00.000Z"
+      },
+      {
+        "casa": "bolsa",
+        "nombre": "Bolsa",
+        "compra": 1530.2,
+        "venta": 1542,
+        "fecha": "2026-08-27T20:56:00.000Z"
+      },
+      {
+        "casa": "contadoconliqui",
+        "nombre": "Contado con liquidación",
+        "compra": 1600.1,
+        "venta": 1602.1,
+        "fecha": "2026-08-27T20:56:00.000Z"
+      },
+      {
+        "casa": "mayorista",
+        "nombre": "Mayorista",
+        "compra": 1503,
+        "venta": 1512,
+        "fecha": "2026-08-27T15:44:00.000Z"
+      },
+      {
+        "casa": "cripto",
+        "nombre": "Cripto",
+        "compra": 1594.85,
+        "venta": 1598.18,
+        "fecha": "2026-08-27T20:56:00.000Z"
+      },
+      {
+        "casa": "tarjeta",
+        "nombre": "Tarjeta",
+        "compra": 1930.5,
+        "venta": 1995.5,
+        "fecha": "2026-08-27T18:00:00.000Z"
+      }
+    ],
+    "updated": "2026-08-27T18:00:00.000Z"
+  },
+  "generatedAt": "2026-08-28T01:12:42.673Z"
+}
