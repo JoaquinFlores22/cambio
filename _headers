@@ -1,0 +1,11 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://open.er-api.com https://dolarapi.com https://api.argentinadatos.com https://api.frankfurter.dev; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+# Netlify y Cloudflare Pages leen este archivo automáticamente. En otro hosting hay que
+# trasladar estas cabeceras a su mecanismo. Una <meta http-equiv> (ver app/layout.tsx) cubre
+# lo que el navegador acepta vía meta; frame-ancestors y X-Frame-Options solo funcionan como
+# header HTTP real.
