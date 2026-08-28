@@ -29,16 +29,16 @@ function Half({ from, to, rates, steps }: Props & { steps: number[] }) {
       </thead>
       <tbody className="divide-line">
         {steps.map((n) => (
-          <tr key={n}>
-            <td className="tnum py-2">
+          <tr key={n} className="group transition-colors hover:bg-[var(--color-brand-tint)]">
+            <td className="tnum rounded-l-md py-2 pl-2">
               <Link
                 href={`/convertir/${from.toLowerCase()}-to-${to.toLowerCase()}?amount=${n}`}
-                className="hover:text-[var(--color-brand-strong)]"
+                className="transition-colors group-hover:text-[var(--color-brand-strong)]"
               >
                 {formatMoney(n, from)}
               </Link>
             </td>
-            <td className="tnum py-2 text-right font-medium">
+            <td className="tnum rounded-r-md py-2 pr-2 text-right font-medium">
               {formatMoney(convert(n, from, to, rates), to)}
             </td>
           </tr>

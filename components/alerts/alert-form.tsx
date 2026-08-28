@@ -73,17 +73,17 @@ export function AlertForm() {
     <form onSubmit={submit} className="card space-y-5 p-6 sm:p-8">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="eyebrow mb-2 block">{tr(C.base)}</label>
+          <label className="field-label mb-2">{tr(C.base)}</label>
           <CurrencyCombobox value={from} onChange={setFrom} label={tr(C.base)} exclude={[to]} />
         </div>
         <div>
-          <label className="eyebrow mb-2 block">{tr(C.target)}</label>
+          <label className="field-label mb-2">{tr(C.target)}</label>
           <CurrencyCombobox value={to} onChange={setTo} label={tr(C.target)} exclude={[from]} />
         </div>
       </div>
 
       <div>
-        <span className="eyebrow mb-2 block">{tr(C.condition)}</span>
+        <span className="field-label mb-2">{tr(C.condition)}</span>
         <div className="seg" role="group" aria-label={tr(C.condition)}>
           <button type="button" aria-pressed={direction === "above"} onClick={() => setDirection("above")}>
             {tr(C.above)}
@@ -96,7 +96,7 @@ export function AlertForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="target" className="eyebrow mb-2 block">
+          <label htmlFor="target" className="field-label mb-2">
             {tr(C.targetValue).replace("{to}", to).replace("{from}", from)}
           </label>
           <input
@@ -112,7 +112,7 @@ export function AlertForm() {
           </p>
         </div>
         <div>
-          <label htmlFor="email" className="eyebrow mb-2 block">{tr(C.email)}</label>
+          <label htmlFor="email" className="field-label mb-2">{tr(C.email)}</label>
           <input
             id="email"
             type="email"

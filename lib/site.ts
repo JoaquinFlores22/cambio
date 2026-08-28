@@ -3,9 +3,9 @@ export const SITE = {
   name: "Cambio",
   // Glifo de la marca (flechas de intercambio). Se usa junto al wordmark.
   glyph: "⇄",
-  tagline: "Convertí divisas al tipo real de mercado.",
+  tagline: "El tipo de cambio real, en tiempo real.",
   description:
-    "Conversor de divisas con el tipo medio de mercado, gráfico histórico y las cotizaciones del dólar en Argentina (oficial, blue y MEP). Sin comisiones ocultas, datos actualizados cada día.",
+    "Conversor de divisas con el tipo medio de mercado, gráfico histórico y todas las cotizaciones del dólar en Argentina (oficial, blue, MEP). Se actualiza solo cada minuto. Sin comisiones, sin letra chica.",
   // URL de producción. Cambiar por el dominio del cliente al entregar.
   url: "https://cambio.example",
   locale: "es_AR",

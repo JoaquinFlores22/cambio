@@ -53,13 +53,13 @@ export function WorldMap({ dots = [] }: { dots?: MapDot[] }) {
   );
 
   return (
-    <div className="relative aspect-[2/1] w-full">
+    <div className="relative mx-auto aspect-[2/1] max-h-[440px] w-full max-w-4xl">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={mapSrc}
         alt=""
         aria-hidden
-        className="pointer-events-none h-full w-full select-none object-contain opacity-90 [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)]"
+        className="pointer-events-none h-full w-full select-none object-contain opacity-95 [mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_92%)]"
         draggable={false}
       />
       <svg

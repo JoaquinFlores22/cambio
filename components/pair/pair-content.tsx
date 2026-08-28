@@ -27,14 +27,14 @@ export function PairContent({ pair, slug }: { pair: Pair; slug: string }) {
           <span className="text-[var(--color-ink)]">{title}</span>
         </nav>
 
-        <h1 className="mt-4 text-3xl sm:text-4xl">
+        <h1 className="mt-4 text-3xl sm:text-[2.75rem] sm:leading-[1.08]">
           {t("pair.convert", { from: tr(f.name), to: tr(tt.name) })}
         </h1>
-        <p className="tnum mt-3 flex flex-wrap items-center gap-2 text-lg text-[var(--color-muted)]">
+        <p className="tnum mt-4 flex flex-wrap items-center gap-2.5 text-lg">
           <Flag code={pair.from} size="lg" />
-          1 {pair.from} ≈{" "}
-          <span className="font-semibold text-[var(--color-brand-strong)]">{formatRate(snapshotRate)}</span>{" "}
-          {pair.to}
+          <span className="text-[var(--color-muted)]">1 {pair.from} ≈</span>
+          <span className="text-xl font-bold text-[var(--color-brand-strong)]">{formatRate(snapshotRate)}</span>
+          <span className="text-[var(--color-muted)]">{pair.to}</span>
           <Flag code={pair.to} size="lg" />
         </p>
         <p className="mt-4 max-w-2xl text-[var(--color-muted)]">{tr(pair.intro)}</p>
@@ -52,11 +52,9 @@ export function PairContent({ pair, slug }: { pair: Pair; slug: string }) {
 
       {revPair && (
         <section className="wrap mt-8">
-          <Link
-            href={`/convertir/${rev}`}
-            className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-brand-strong)] hover:underline"
-          >
-            ⇄ {t("pair.reverse", { title: pairTitle(revPair, lang), from: pair.to, to: pair.from })}
+          <Link href={`/convertir/${rev}`} className="link-arrow text-sm">
+            <span className="arrow" aria-hidden>⇄</span>{" "}
+            {t("pair.reverse", { title: pairTitle(revPair, lang), from: pair.to, to: pair.from })}
           </Link>
         </section>
       )}

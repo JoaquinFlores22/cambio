@@ -26,7 +26,7 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h2 className="eyebrow mb-3">{t("footer.popularPairs")}</h2>
+          <h2 className="field-label mb-3">{t("footer.popularPairs")}</h2>
           <ul className="space-y-2 text-sm">
             {PAIRS.slice(0, 5).map((p) => (
               <li key={p.slug}>
@@ -39,7 +39,7 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h2 className="eyebrow mb-3">{t("footer.product")}</h2>
+          <h2 className="field-label mb-3">{t("footer.product")}</h2>
           <ul className="space-y-2 text-sm">
             <li><Link href="/monedas" className="text-[var(--color-muted)] hover:text-[var(--color-ink)]">{t("nav.currencies")}</Link></li>
             <li><Link href="/alertas" className="text-[var(--color-muted)] hover:text-[var(--color-ink)]">{t("nav.alerts")}</Link></li>
@@ -48,7 +48,7 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h2 className="eyebrow mb-3">{t("footer.madeBy")}</h2>
+          <h2 className="field-label mb-3">{t("footer.madeBy")}</h2>
           {SITE.madeBy.label && (
             <a
               href={SITE.madeBy.href}

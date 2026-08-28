@@ -85,7 +85,7 @@ export function RateChart({ from, to, arKind = "blue" }: Props) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold">{t("chart.title")}</h2>
-          <p className="text-sm text-[var(--color-muted)]">
+          <p className="font-mono text-xs uppercase tracking-wide text-[var(--color-muted)]">
             {fromCur.code} / {toCur.code}
           </p>
         </div>
@@ -137,12 +137,31 @@ export function RateChart({ from, to, arKind = "blue" }: Props) {
             >
               <defs>
                 <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--color-brand)" stopOpacity="0.28" />
+                  <stop offset="0%" stopColor="var(--color-brand)" stopOpacity="0.30" />
                   <stop offset="100%" stopColor="var(--color-brand)" stopOpacity="0" />
                 </linearGradient>
+                <linearGradient id={`${gradId}-line`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="var(--color-brand)" />
+                  <stop offset="100%" stopColor="var(--color-brand-2)" />
+                </linearGradient>
               </defs>
-              <path d={geom.area} fill={`url(#${gradId})`} />
-              <path d={geom.line} fill="none" stroke="var(--color-brand)" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+              <path key={`a-${from}-${to}-${range}`} className="chart-area" d={geom.area} fill={`url(#${gradId})`} />
+              <path
+                key={`l-${from}-${to}-${range}`}
+                className="chart-line"
+                d={geom.line}
+                fill="none"
+                stroke={`url(#${gradId}-line)`}
+                strokeWidth="2.5"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              {!hover && data.length > 0 && (
+                <circle cx={geom.x(data.length - 1)} cy={geom.y(data[data.length - 1].value)} r="3.5" fill="var(--color-brand-2)">
+                  <animate attributeName="r" values="3.5;7;3.5" dur="2.4s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="1;0.3;1" dur="2.4s" repeatCount="indefinite" />
+                </circle>
+              )}
               {hover && hoverIdx != null && (
                 <g>
                   <line

@@ -5,36 +5,43 @@ const b = (es: string, en: string): Bilingual => ({ es, en });
 // Contenido largo de las páginas, bilingüe. Los componentes lo renderizan con `tr()`.
 
 export const HOME = {
-  eyebrow: b("Tipo de cambio real, sin vueltas", "Real exchange rates, no fine print"),
+  eyebrow: b("Datos en vivo · se actualiza solo", "Live data · updates itself"),
   title: b(
-    "Cuánto vale tu dinero en otra moneda.",
-    "What your money is worth in another currency.",
+    "El valor real de tu plata, sin intermediarios.",
+    "What your money is really worth, no middlemen.",
   ),
   subtitle: b(
-    "Al tipo medio de mercado, con el historial del par y todas las cotizaciones del dólar en Argentina.",
-    "At the mid-market rate, with the pair's history and every Argentine dollar quote.",
+    "Convertí al tipo medio de mercado —el que mueve a los bancos, no el del cartel de la casa de cambio—. Con gráfico histórico y todas las cotizaciones del dólar en Argentina.",
+    "Convert at the mid-market rate — the one banks move on, not the one on the exchange-house sign. With a historical chart and every Argentine dollar quote.",
+  ),
+  trust: b(
+    "Se refresca cada 60 segundos · 30+ monedas · oficial, blue y MEP",
+    "Refreshes every 60 seconds · 30+ currencies · official, blue and MEP",
   ),
   valuesTitle: b("Por qué Cambio", "Why Cambio"),
   values: [
     {
-      title: b("Tipo medio de mercado", "Mid-market rate"),
+      icon: "◎",
+      title: b("El precio sin maquillaje", "The price with no makeup"),
       body: b(
-        "El mismo valor de referencia que usan los bancos entre sí, sin el margen de una casa de cambio. El punto de partida honesto.",
-        "The same reference banks use between themselves, without an exchange house's margin. The honest starting point.",
+        "El tipo medio de mercado es el que usan los bancos entre sí. Sin el margen que te suma la casa de cambio. Es el número honesto para saber cuánto vale tu plata.",
+        "The mid-market rate is the one banks use between themselves — without the margin an exchange house adds. It's the honest number for what your money is worth.",
       ),
     },
     {
-      title: b("El dólar argentino, completo", "The Argentine dollar, in full"),
+      icon: "⇅",
+      title: b("El dólar argentino, entero", "The Argentine dollar, whole"),
       body: b(
-        "Oficial, blue, MEP, CCL, tarjeta y cripto en una sola vista, con la brecha calculada. Ningún conversor internacional muestra esto.",
-        "Official, blue, MEP, CCL, card and crypto in one view, with the gap calculated. No international converter shows this.",
+        "Oficial, blue, MEP, CCL, tarjeta y cripto en una sola pantalla, con la brecha ya calculada. Ningún conversor internacional te muestra esto.",
+        "Official, blue, MEP, CCL, card and crypto on one screen, with the gap already calculated. No international converter shows you this.",
       ),
     },
     {
-      title: b("Historial real", "Real history"),
+      icon: "◔",
+      title: b("Contexto, no una foto", "Context, not a snapshot"),
       body: b(
-        "Gráfico de 30 días, 90 días y un año para cada par, con la variación del período. Contexto, no la foto de un día.",
-        "A 30-day, 90-day and one-year chart for each pair, with the period's change. Context, not a single day's snapshot.",
+        "Gráfico de 30 días, 90 días y un año para cada par, con la variación del período. Para decidir sabiendo dónde está parado el precio.",
+        "A 30-day, 90-day and one-year chart for every pair, with the period's change. To decide knowing where the price stands.",
       ),
     },
   ],
@@ -69,21 +76,21 @@ export const HOME = {
       ),
     },
   ],
-  ctaTitle: b("¿Seguís un tipo de cambio en particular?", "Tracking a particular rate?"),
+  ctaTitle: b("Poné el precio que estás esperando.", "Name the price you're waiting for."),
   ctaBody: b(
-    "Configurá una alerta y te avisamos cuando llegue al valor que esperás.",
-    "Set an alert and we'll notify you when it reaches the value you're waiting for.",
+    "Creás una alerta con el par y el valor, y te llega un mail cuando el mercado lo toca. Sin apps, sin revisar la pantalla diez veces por día.",
+    "Set an alert with the pair and the value, and you get an email when the market hits it. No apps, no checking the screen ten times a day.",
   ),
-  ctaButton: b("Crear alerta", "Create alert"),
+  ctaButton: b("Crear una alerta", "Create an alert"),
 };
 
 export const NETWORK = {
-  eyebrow: b("Cobertura", "Coverage"),
+  eyebrow: b("De dónde sale el número", "Where the number comes from"),
   titleLead: b("Una red", "A network"),
   titleRest: b("de plazas financieras", "of financial centers"),
   body: b(
-    "Los tipos de cambio se forman donde se opera la moneda: Nueva York, Londres, Fráncfort, Tokio, San Pablo, Buenos Aires. Cambio toma la referencia de esos mercados y la trae a un solo lugar.",
-    "Exchange rates form where the currency trades: New York, London, Frankfurt, Tokyo, São Paulo, Buenos Aires. Cambio pulls the reference from those markets into one place.",
+    "El tipo de cambio se arma donde se opera la moneda: Nueva York, Londres, Fráncfort, Tokio, San Pablo, Buenos Aires. Cambio toma la referencia de esos mercados, la cruza y la deja lista para vos.",
+    "The exchange rate is built where the currency trades: New York, London, Frankfurt, Tokyo, São Paulo, Buenos Aires. Cambio pulls the reference from those markets, cross-computes it and hands it to you ready.",
   ),
 };
 

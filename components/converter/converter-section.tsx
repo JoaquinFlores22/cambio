@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
-import { useRates } from "@/lib/use-rates";
+import { useRates } from "@/lib/rates-context";
 import { makeSlug, pairTitle } from "@/lib/pairs";
 import { ConverterCard } from "./converter-card";
 import { ConversionTable } from "./conversion-table";
@@ -65,11 +65,9 @@ export function ConverterSection({
         <>
           {touchesArs && <ArRatesStrip ar={live.ar} pairSlug={pairSlug} />}
           <RateChart from={from} to={to} />
-          <Link
-            href={`/convertir/${pairSlug}`}
-            className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-brand-strong)] hover:underline"
-          >
-            {t("conv.seeDetail", { pair: pairTitle({ from, to }, lang) })} →
+          <Link href={`/convertir/${pairSlug}`} className="link-arrow text-sm">
+            {t("conv.seeDetail", { pair: pairTitle({ from, to }, lang) })}{" "}
+            <span className="arrow" aria-hidden>→</span>
           </Link>
         </>
       ) : (

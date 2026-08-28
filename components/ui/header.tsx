@@ -22,26 +22,32 @@ export function SiteHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[color-mix(in_oklab,var(--color-bg)_88%,transparent)] backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[color-mix(in_oklab,var(--color-bg)_82%,transparent)] backdrop-blur-xl">
       <div className="wrap flex h-16 items-center gap-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight" aria-label={`${SITE.name}, inicio`}>
+        <Link
+          href="/"
+          className="group flex items-center gap-2 font-semibold tracking-tight"
+          aria-label={`${SITE.name}, inicio`}
+        >
           <span
             aria-hidden
-            className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--color-brand)] text-[var(--color-brand-contrast)] text-sm"
+            className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--gradient-brand)] text-[var(--color-brand-contrast)] text-sm transition-transform duration-300 group-hover:rotate-[-12deg] group-hover:scale-105"
+            style={{ background: "var(--gradient-brand)" }}
           >
             {SITE.glyph}
           </span>
           <span className="text-lg">{SITE.name}</span>
         </Link>
 
-        <nav className="ml-6 hidden items-center gap-6 text-sm md:flex" aria-label="Principal">
+        <nav className="ml-8 hidden items-center gap-7 text-sm md:flex" aria-label="Principal">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
+              data-active={pathname === link.href}
               className={clsx(
-                "font-medium transition-colors hover:text-[var(--color-ink)]",
-                pathname === link.href ? "text-[var(--color-ink)]" : "text-[var(--color-muted)]",
+                "nav-link font-medium",
+                pathname === link.href ? "text-[var(--color-ink)]" : "text-[var(--color-muted)] hover:text-[var(--color-ink)]",
               )}
             >
               {link.label}
@@ -56,13 +62,13 @@ export function SiteHeader() {
           <ThemeToggle />
           <button
             type="button"
-            className="grid h-9 w-9 place-items-center rounded-full border border-[var(--color-line)] text-[var(--color-muted)] md:hidden"
-            aria-label={t("nav.openMenu")}
+            className="grid h-9 w-9 place-items-center rounded-full border border-[var(--color-line)] text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)] md:hidden"
+            aria-label={t("nav.menu")}
             aria-expanded={open}
             aria-controls="mobile-nav"
             onClick={() => setOpen((v) => !v)}
           >
-            ☰
+            {open ? "✕" : "☰"}
           </button>
         </div>
       </div>
@@ -79,10 +85,10 @@ export function SiteHeader() {
               key={link.href}
               href={link.href}
               className={clsx(
-                "rounded-lg px-3 py-2.5 text-sm font-medium",
+                "rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                 pathname === link.href
                   ? "bg-[var(--color-brand-tint)] text-[var(--color-ink)]"
-                  : "text-[var(--color-muted)]",
+                  : "text-[var(--color-muted)] hover:bg-[var(--color-brand-tint)]",
               )}
             >
               {link.label}

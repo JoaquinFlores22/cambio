@@ -29,7 +29,7 @@ export function CurrenciesContent() {
               <li key={c.code}>
                 <Link
                   href={`/convertir/${makeSlug("USD", c.code)}`}
-                  className="card flex items-center gap-3 p-4 transition-transform hover:-translate-y-0.5"
+                  className="card card-hover flex items-center gap-3 p-4"
                 >
                   <Flag code={c.code} size="lg" />
                   <span className="min-w-0">

@@ -13,23 +13,49 @@ export function HomeContent() {
 
   return (
     <>
-      <section className="wrap pt-14 pb-6 sm:pt-20">
-        <p className="eyebrow">{tr(HOME.eyebrow)}</p>
-        <h1 className="mt-4 max-w-2xl text-4xl sm:text-5xl">{tr(HOME.title)}</h1>
-        <p className="mt-4 max-w-xl text-lg text-[var(--color-muted)]">{tr(HOME.subtitle)}</p>
-      </section>
+      {/* Hero + conversor sobre una grilla tenue */}
+      <div className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[560px] grid-fade" aria-hidden />
 
-      <div className="wrap">
-        <ConverterSection
-          initialFrom="USD"
-          initialTo="ARS"
-          initialAmount={1000}
-          readQuery
-          variant="home"
-        />
+        <section className="wrap pt-16 pb-8 sm:pt-24">
+          <p className="eyebrow">
+            <span className="live-dot" aria-hidden />
+            {tr(HOME.eyebrow)}
+          </p>
+          <h1 className="mt-5 max-w-3xl text-[2.6rem] leading-[1.05] sm:text-6xl">
+            {tr({
+              es: (
+                <>
+                  El valor real de tu plata,{" "}
+                  <span className="text-gradient">sin intermediarios.</span>
+                </>
+              ),
+              en: (
+                <>
+                  What your money is really worth,{" "}
+                  <span className="text-gradient">no middlemen.</span>
+                </>
+              ),
+            })}
+          </h1>
+          <p className="mt-5 max-w-xl text-lg text-[var(--color-muted)]">{tr(HOME.subtitle)}</p>
+          <p className="mt-4 font-mono text-xs uppercase tracking-wide text-[var(--color-muted)]">
+            {tr(HOME.trust)}
+          </p>
+        </section>
+
+        <div className="wrap pb-2">
+          <ConverterSection
+            initialFrom="USD"
+            initialTo="ARS"
+            initialAmount={1000}
+            readQuery
+            variant="home"
+          />
+        </div>
       </div>
 
-      <section className="wrap mt-10">
+      <section className="wrap mt-12">
         <PairQuickPicks />
       </section>
 
@@ -37,13 +63,20 @@ export function HomeContent() {
 
       <section className="wrap mt-28">
         <Reveal>
-          <h2 className="text-2xl sm:text-3xl">{tr(HOME.valuesTitle)}</h2>
+          <p className="eyebrow">{tr({ es: "La diferencia", en: "The difference" })}</p>
+          <h2 className="mt-3 text-3xl sm:text-4xl">{tr(HOME.valuesTitle)}</h2>
         </Reveal>
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
           {HOME.values.map((v, i) => (
-            <Reveal as="article" key={i} delay={i * 0.05} className="card p-6">
-              <h3 className="text-lg font-semibold">{tr(v.title)}</h3>
-              <p className="mt-2 text-sm text-[var(--color-muted)]">{tr(v.body)}</p>
+            <Reveal as="article" key={i} delay={i * 0.07} className="card card-hover p-7">
+              <span
+                aria-hidden
+                className="grid h-11 w-11 place-items-center rounded-xl bg-[var(--color-brand-tint)] text-xl text-[var(--color-brand-strong)]"
+              >
+                {v.icon}
+              </span>
+              <h3 className="mt-5 text-lg font-semibold">{tr(v.title)}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">{tr(v.body)}</p>
             </Reveal>
           ))}
         </div>
@@ -51,36 +84,39 @@ export function HomeContent() {
 
       <section className="wrap mt-28">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-2xl sm:text-3xl">{tr(HOME.faqTitle)}</h2>
+          <h2 className="text-3xl sm:text-4xl">{tr(HOME.faqTitle)}</h2>
           <div className="divide-line mt-6">
             {HOME.faq.map((f, i) => (
               <details key={i} className="group py-4">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium transition-colors hover:text-[var(--color-brand-strong)]">
                   {tr(f.q)}
                   <span
-                    className="text-[var(--color-brand-strong)] transition-transform group-open:rotate-45"
+                    className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-[var(--color-line-strong)] text-[var(--color-brand-strong)] transition-transform duration-300 group-open:rotate-45"
                     aria-hidden
                   >
                     +
                   </span>
                 </summary>
-                <p className="mt-2 text-sm text-[var(--color-muted)]">{tr(f.a)}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">{tr(f.a)}</p>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="wrap mt-16">
-        <div className="card flex flex-col items-start gap-4 bg-[var(--color-brand-tint)] p-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-xl font-semibold">{tr(HOME.ctaTitle)}</h2>
-            <p className="mt-1 text-sm text-[var(--color-muted)]">{tr(HOME.ctaBody)}</p>
+      <section className="wrap mt-20">
+        <Reveal className="card card-feature overflow-hidden p-8 sm:p-12">
+          <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="max-w-md">
+              <h2 className="text-2xl sm:text-3xl">{tr(HOME.ctaTitle)}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">{tr(HOME.ctaBody)}</p>
+            </div>
+            <Link href="/alertas" className="btn btn-primary shrink-0">
+              {tr(HOME.ctaButton)}
+              <span className="arrow" aria-hidden>→</span>
+            </Link>
           </div>
-          <Link href="/alertas" className="btn btn-primary shrink-0">
-            {tr(HOME.ctaButton)}
-          </Link>
-        </div>
+        </Reveal>
       </section>
     </>
   );
