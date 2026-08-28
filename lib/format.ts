@@ -1,11 +1,15 @@
 import { getCurrency } from "./currencies";
 
-const LOCALE = "es-AR";
+// Locale de formato. Por defecto es-AR (mercado principal). `LangProvider` lo cambia a "en"
+// cuando el usuario pasa a inglés, así fechas y tiempos relativos también quedan traducidos.
+let LOCALE = "es-AR";
+export function setFormatLocale(lang: "es" | "en") {
+  LOCALE = lang === "en" ? "en" : "es-AR";
+}
 
 /**
  * Cantidad de dinero con el símbolo de la moneda. Usa los decimales propios de la moneda como
- * mínimo, pero agrega precisión cuando el valor es chico (p. ej. 1 ARS → US$ 0,00066) para que
- * no aparezca como cero.
+ * mínimo, pero agrega precisión cuando el valor es chico (p. ej. 1 ARS → US$ 0,00066).
  */
 export function formatMoney(value: number, code: string): string {
   if (!Number.isFinite(value)) return "—";
@@ -34,10 +38,7 @@ export function formatNumber(value: number, decimals = 2): string {
   });
 }
 
-/**
- * Tipo de cambio con precisión adaptativa: más decimales cuando el número es chico
- * (0,000123) y menos cuando es grande (1.512,75).
- */
+/** Tipo de cambio con precisión adaptativa. */
 export function formatRate(value: number): string {
   if (!Number.isFinite(value)) return "—";
   const decimals = value >= 100 ? 2 : value >= 1 ? 4 : value >= 0.01 ? 5 : 6;
@@ -57,12 +58,11 @@ export function parseAmount(raw: string): number {
   return Number.isFinite(n) ? n : NaN;
 }
 
-const rtf = new Intl.RelativeTimeFormat(LOCALE, { numeric: "auto" });
-
-/** "hace 3 minutos", "hace 2 horas", "ayer"... a partir de un timestamp o fecha ISO. */
+/** "hace 3 minutos" / "3 minutes ago", a partir de un timestamp o fecha ISO. */
 export function formatRelative(input: number | string): string {
   const ms = typeof input === "number" ? input * 1000 : Date.parse(input);
   if (!Number.isFinite(ms)) return "";
+  const rtf = new Intl.RelativeTimeFormat(LOCALE, { numeric: "auto" });
   const diffSec = Math.round((ms - Date.now()) / 1000);
   const abs = Math.abs(diffSec);
   if (abs < 60) return rtf.format(Math.round(diffSec), "second");

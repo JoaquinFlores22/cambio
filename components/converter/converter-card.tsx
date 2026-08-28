@@ -19,7 +19,7 @@ type Props = {
 };
 
 export function ConverterCard({ amount, setAmount, from, setFrom, to, setTo, live }: Props) {
-  const { t } = useLang();
+  const { t, tr } = useLang();
   const [raw, setRaw] = useState(() => formatNumber(amount, 2));
 
   const { rates, status } = live;
@@ -57,7 +57,7 @@ export function ConverterCard({ amount, setAmount, from, setFrom, to, setTo, liv
               onChange={(e) => commitRaw(e.target.value)}
               onBlur={() => setRaw(formatNumber(amount, 2))}
               className="tnum w-full bg-transparent py-3 text-lg font-semibold outline-none"
-              aria-label={`${t("conv.amount")} en ${fromCur.name}`}
+              aria-label={`${t("conv.amount")} · ${tr(fromCur.name)}`}
             />
           </div>
           <div className="mt-2">
@@ -71,7 +71,7 @@ export function ConverterCard({ amount, setAmount, from, setFrom, to, setTo, liv
             type="button"
             onClick={swap}
             aria-label={t("conv.swap")}
-            className="grid h-11 w-11 place-items-center rounded-full border border-[var(--color-line-strong)] bg-[var(--color-surface)] text-[var(--color-muted)] transition-all hover:rotate-180 hover:border-[var(--color-brand)] hover:text-[var(--color-brand)]"
+            className="grid h-11 w-11 place-items-center rounded-full border border-[var(--color-line-strong)] bg-[var(--color-surface)] text-[var(--color-muted)] transition-transform duration-300 hover:rotate-180 hover:border-[var(--color-brand)] hover:text-[var(--color-brand)]"
           >
             ⇄
           </button>
@@ -81,10 +81,7 @@ export function ConverterCard({ amount, setAmount, from, setFrom, to, setTo, liv
         <div>
           <span className="eyebrow mb-2 block">{t("conv.result")}</span>
           <div className="flex min-h-[3.25rem] items-center rounded-[var(--radius-field)] border border-[var(--color-line)] bg-[var(--color-bg)] px-3">
-            <output
-              className="tnum text-lg font-semibold"
-              aria-live="polite"
-            >
+            <output className="tnum text-lg font-semibold" aria-live="polite">
               {formatMoney(result, to)}
             </output>
           </div>
@@ -94,27 +91,38 @@ export function ConverterCard({ amount, setAmount, from, setFrom, to, setTo, liv
         </div>
       </div>
 
-      {/* Línea de tipo de cambio */}
-      <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[var(--color-line)] pt-4 text-sm">
-        <p className="tnum font-medium">
-          1 {fromCur.code} = <span className="text-[var(--color-brand-strong)]">{formatRate(rate)}</span> {toCur.code}
+      {/* Línea de tipo de cambio: una afirmación clara + una nota al pie discreta */}
+      <div className="mt-5 border-t border-[var(--color-line)] pt-4">
+        <p className="tnum text-sm">
+          1 {fromCur.code} ={" "}
+          <span className="font-semibold text-[var(--color-brand-strong)]">{formatRate(rate)}</span>{" "}
+          {toCur.code}
+          <span className="mx-2 text-[var(--color-line-strong)]">·</span>
+          <span className="text-[var(--color-muted)]">
+            1 {toCur.code} = {formatRate(inverse)} {fromCur.code}
+          </span>
         </p>
-        <p className="tnum text-[var(--color-muted)]">
-          1 {toCur.code} = {formatRate(inverse)} {fromCur.code}
+        <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--color-muted)]">
+          <span>{t("conv.midMarket")}</span>
+          <span aria-hidden>·</span>
+          <span suppressHydrationWarning>
+            {t("conv.updated")} {formatRelative(rates.updated)}
+          </span>
+          <span aria-hidden>·</span>
+          {status === "snapshot" ? (
+            <span title={t("conv.offline")}>{t("conv.snapshot")}</span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 text-[var(--color-positive)]">
+              <span
+                className="h-1.5 w-1.5 rounded-full bg-current"
+                style={{ animation: "pulse 1.8s ease-in-out infinite" }}
+                aria-hidden
+              />
+              {t("conv.live")}
+            </span>
+          )}
         </p>
-        <div className="ml-auto flex items-center gap-2">
-          <span className="chip">{t("conv.midMarket")}</span>
-          {status === "live" && (
-            <span className="chip chip-live"><span className="dot" aria-hidden /> {t("conv.live")}</span>
-          )}
-          {status === "snapshot" && (
-            <span className="chip" title={t("conv.offline")}>{t("conv.snapshot")}</span>
-          )}
-        </div>
       </div>
-      <p className="mt-1 text-xs text-[var(--color-muted)]">
-        {t("conv.updated")} {formatRelative(rates.updated)} · {rates.source}
-      </p>
     </div>
   );
 }

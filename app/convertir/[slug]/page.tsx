@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE } from "@/lib/site";
 import { getCurrency } from "@/lib/currencies";
-import { ALL_SLUGS, PAIRS, getPairContent, pairTitle, reverseSlug } from "@/lib/pairs";
-import { SNAPSHOT, pairRate } from "@/lib/rates";
-import { formatRate } from "@/lib/format";
-import { ConverterSection } from "@/components/converter/converter-section";
-import { Flag } from "@/components/ui/flag";
+import { ALL_SLUGS, getPairContent, pairTitle } from "@/lib/pairs";
+import { PairContent } from "@/components/pair/pair-content";
 import { JsonLd } from "@/components/ui/jsonld";
 
 export const dynamicParams = false;
@@ -26,8 +22,8 @@ export async function generateMetadata({
   if (!pair) return {};
   const f = getCurrency(pair.from);
   const t = getCurrency(pair.to);
-  const title = `Convertir ${f.name} a ${t.name} (${pair.from} a ${pair.to})`;
-  const description = `Cambio de ${f.name} a ${t.name} al tipo medio de mercado, con gráfico histórico${
+  const title = `Convertir ${f.name.es} a ${t.name.es} (${pair.from} a ${pair.to})`;
+  const description = `Cambio de ${f.name.es} a ${t.name.es} al tipo medio de mercado, con gráfico histórico${
     pair.from === "ARS" || pair.to === "ARS" ? " y las cotizaciones del dólar oficial, blue y MEP" : ""
   }. Actualizado a diario.`;
   const url = `${SITE.url}/convertir/${slug}`;
@@ -45,12 +41,6 @@ export default async function PairPage({ params }: { params: Promise<{ slug: str
   const pair = getPairContent(slug);
   if (!pair) notFound();
 
-  const f = getCurrency(pair.from);
-  const t = getCurrency(pair.to);
-  const snapshotRate = pairRate(pair.from, pair.to, SNAPSHOT.rates);
-  const rev = reverseSlug(pair);
-  const revPair = getPairContent(rev);
-
   return (
     <>
       <JsonLd
@@ -63,7 +53,7 @@ export default async function PairPage({ params }: { params: Promise<{ slug: str
               {
                 "@type": "ListItem",
                 position: 2,
-                name: pairTitle(pair),
+                name: pairTitle(pair, "es"),
                 item: `${SITE.url}/convertir/${slug}`,
               },
             ],
@@ -73,78 +63,13 @@ export default async function PairPage({ params }: { params: Promise<{ slug: str
             "@type": "FAQPage",
             mainEntity: pair.faq.map((x) => ({
               "@type": "Question",
-              name: x.q,
-              acceptedAnswer: { "@type": "Answer", text: x.a },
+              name: x.q.es,
+              acceptedAnswer: { "@type": "Answer", text: x.a.es },
             })),
           },
         ]}
       />
-
-      <section className="wrap pt-10 pb-4">
-        <nav className="text-sm text-[var(--color-muted)]" aria-label="Ruta de navegación">
-          <Link href="/" className="hover:text-[var(--color-ink)]">Conversor</Link>
-          <span className="mx-1.5" aria-hidden>/</span>
-          <span className="text-[var(--color-ink)]">{pairTitle(pair)}</span>
-        </nav>
-
-        <h1 className="mt-4 text-3xl sm:text-4xl">
-          Convertir {f.name} <span className="text-[var(--color-muted)]">a</span> {t.name}
-        </h1>
-        <p className="tnum mt-3 flex flex-wrap items-center gap-2 text-lg text-[var(--color-muted)]">
-          <Flag code={pair.from} size="lg" />
-          1 {pair.from} ≈{" "}
-          <span className="font-semibold text-[var(--color-brand-strong)]">{formatRate(snapshotRate)}</span>{" "}
-          {pair.to}
-          <Flag code={pair.to} size="lg" />
-        </p>
-        <p className="mt-4 max-w-2xl text-[var(--color-muted)]">{pair.intro}</p>
-      </section>
-
-      <div className="wrap">
-        <ConverterSection
-          initialFrom={pair.from}
-          initialTo={pair.to}
-          initialAmount={1000}
-          readQuery
-        />
-      </div>
-
-      {revPair && (
-        <section className="wrap mt-8">
-          <Link
-            href={`/convertir/${rev}`}
-            className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-brand-strong)] hover:underline"
-          >
-            ⇄ Ver {pairTitle(revPair)} ({pair.to} a {pair.from})
-          </Link>
-        </section>
-      )}
-
-      <section className="wrap mt-16">
-        <h2 className="text-2xl">Preguntas sobre {pair.from} / {pair.to}</h2>
-        <div className="divide-line mt-4 max-w-2xl">
-          {pair.faq.map((x) => (
-            <details key={x.q} className="group py-4">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
-                {x.q}
-                <span className="text-[var(--color-brand-strong)] transition-transform group-open:rotate-45" aria-hidden>+</span>
-              </summary>
-              <p className="mt-2 text-sm text-[var(--color-muted)]">{x.a}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      <section className="wrap mt-16">
-        <p className="mb-3 text-sm font-medium text-[var(--color-muted)]">Otros pares</p>
-        <div className="flex flex-wrap gap-2">
-          {PAIRS.filter((p) => p.slug !== slug).map((p) => (
-            <Link key={p.slug} href={`/convertir/${p.slug}`} className="chip hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]">
-              {p.from} → {p.to}
-            </Link>
-          ))}
-        </div>
-      </section>
+      <PairContent pair={pair} slug={slug} />
     </>
   );
 }

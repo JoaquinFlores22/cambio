@@ -1,14 +1,22 @@
 "use client";
 
-// i18n liviano para el "chrome" de la interfaz (nav, conversor, botones, textos comunes).
-// El contenido largo de las páginas de pares está en español (producto orientado a Argentina);
-// sumar inglés ahí es cambiar los diccionarios de `pairs`, no tocar componentes.
+// i18n de toda la aplicación — contenido y UX.
 //
-// Persiste el idioma en localStorage y actualiza <html lang>. Default: es.
+// - `t(key, vars?)`  → strings de interfaz (nav, botones, labels del conversor…), del
+//   diccionario UI de acá abajo.
+// - `tr(bilingual)`  → resuelve un objeto `{ es, en }` (lo usan `lib/pairs.ts` y
+//   `lib/content.ts` para el contenido largo de las páginas).
+//
+// El idioma se persiste en localStorage y se refleja en <html lang>. Default: es.
+// Como el sitio es export estático, el HTML servido está en español (mercado principal:
+// Argentina) y el cambio a inglés ocurre en el cliente, al instante, sobre toda la página.
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { setFormatLocale } from "./format";
 
 export type Lang = "es" | "en";
+
+export type Bilingual<T = string> = { es: T; en: T };
 
 type Dict = Record<string, string>;
 
@@ -17,32 +25,33 @@ const ES: Dict = {
   "nav.currencies": "Monedas",
   "nav.alerts": "Alertas",
   "nav.how": "Cómo funciona",
-  "nav.openMenu": "Abrir menú",
+  "nav.menu": "Menú",
+  "nav.close": "Cerrar",
 
   "conv.amount": "Monto",
   "conv.from": "De",
   "conv.to": "A",
   "conv.swap": "Invertir monedas",
-  "conv.result": "resultado",
+  "conv.result": "Resultado",
   "conv.midMarket": "Tipo medio de mercado",
   "conv.updated": "Actualizado",
-  "conv.rateLine": "{from} = {rate} {to}",
-  "conv.inverseLine": "1 {to} = {rate} {from}",
   "conv.live": "En vivo",
   "conv.snapshot": "Última cotización guardada",
-  "conv.offline": "Sin conexión con la fuente — mostrando el último valor disponible.",
+  "conv.offline": "Sin conexión con la fuente — se muestra el último valor disponible.",
   "conv.searchCurrency": "Buscar moneda",
   "conv.noResults": "Sin resultados",
+  "conv.seeDetail": "Ver todo sobre {pair}",
 
   "table.title": "Conversiones frecuentes",
-  "table.amountIn": "{code}",
   "table.reverseTitle": "En sentido inverso",
+  "table.showMore": "Ver tabla completa",
+  "table.showLess": "Ver menos",
 
   "chart.title": "Evolución del tipo de cambio",
   "chart.range.30": "30 días",
   "chart.range.90": "90 días",
   "chart.range.365": "1 año",
-  "chart.unavailable": "No hay datos históricos para este par todavía.",
+  "chart.unavailable": "Todavía no hay datos históricos para este par.",
   "chart.loading": "Cargando gráfico…",
   "chart.change": "{sign}{pct}% en {days} días",
 
@@ -51,18 +60,26 @@ const ES: Dict = {
   "ar.buy": "Compra",
   "ar.sell": "Venta",
   "ar.spread": "Brecha vs. oficial",
+  "ar.seeAll": "Ver todas las cotizaciones",
 
-  "cta.alerts": "Crear alerta de tipo de cambio",
-  "cta.viewPair": "Ver par completo",
-  "cta.allCurrencies": "Ver todas las monedas",
+  "faq.title": "Preguntas frecuentes",
+  "faq.pairTitle": "Preguntas sobre {pair}",
 
-  "common.poweredBy": "Datos: tipo medio de mercado + cotizaciones del dólar argentino.",
-  "common.madeBy": "Hecho por",
-  "common.disclaimer":
+  "pair.breadcrumb": "Conversor",
+  "pair.convert": "Convertir {from} a {to}",
+  "pair.reverse": "Ver {title} ({from} a {to})",
+  "pair.others": "Otros pares",
+
+  "footer.disclaimer":
     "Los valores son de referencia y pueden diferir del precio final de una operación. No constituye asesoramiento financiero.",
   "footer.rights": "Todos los derechos reservados.",
   "footer.popularPairs": "Pares populares",
   "footer.product": "Producto",
+  "footer.madeBy": "Hecho por",
+  "footer.dataNote": "Datos: tipo medio de mercado + cotizaciones del dólar argentino.",
+
+  "common.mostSearched": "Pares más buscados",
+  "common.goToConverter": "Ir al conversor",
 };
 
 const EN: Dict = {
@@ -70,26 +87,27 @@ const EN: Dict = {
   "nav.currencies": "Currencies",
   "nav.alerts": "Alerts",
   "nav.how": "How it works",
-  "nav.openMenu": "Open menu",
+  "nav.menu": "Menu",
+  "nav.close": "Close",
 
   "conv.amount": "Amount",
   "conv.from": "From",
   "conv.to": "To",
   "conv.swap": "Swap currencies",
-  "conv.result": "result",
+  "conv.result": "Result",
   "conv.midMarket": "Mid-market rate",
   "conv.updated": "Updated",
-  "conv.rateLine": "{from} = {rate} {to}",
-  "conv.inverseLine": "1 {to} = {rate} {from}",
   "conv.live": "Live",
   "conv.snapshot": "Last saved rate",
   "conv.offline": "No connection to the source — showing the last available value.",
   "conv.searchCurrency": "Search currency",
   "conv.noResults": "No results",
+  "conv.seeDetail": "See everything about {pair}",
 
   "table.title": "Common conversions",
-  "table.amountIn": "{code}",
   "table.reverseTitle": "The other way around",
+  "table.showMore": "Show full table",
+  "table.showLess": "Show less",
 
   "chart.title": "Exchange rate over time",
   "chart.range.30": "30 days",
@@ -104,18 +122,26 @@ const EN: Dict = {
   "ar.buy": "Buy",
   "ar.sell": "Sell",
   "ar.spread": "Gap vs. official",
+  "ar.seeAll": "See all quotes",
 
-  "cta.alerts": "Create a rate alert",
-  "cta.viewPair": "View full pair",
-  "cta.allCurrencies": "View all currencies",
+  "faq.title": "Frequently asked questions",
+  "faq.pairTitle": "Questions about {pair}",
 
-  "common.poweredBy": "Data: mid-market rate + Argentine dollar quotes.",
-  "common.madeBy": "Made by",
-  "common.disclaimer":
+  "pair.breadcrumb": "Converter",
+  "pair.convert": "Convert {from} to {to}",
+  "pair.reverse": "See {title} ({from} to {to})",
+  "pair.others": "Other pairs",
+
+  "footer.disclaimer":
     "Values are indicative and may differ from the final price of a transaction. Not financial advice.",
   "footer.rights": "All rights reserved.",
   "footer.popularPairs": "Popular pairs",
   "footer.product": "Product",
+  "footer.madeBy": "Made by",
+  "footer.dataNote": "Data: mid-market rate + Argentine dollar quotes.",
+
+  "common.mostSearched": "Most searched pairs",
+  "common.goToConverter": "Go to the converter",
 };
 
 const DICTS: Record<Lang, Dict> = { es: ES, en: EN };
@@ -129,23 +155,38 @@ type Ctx = {
   lang: Lang;
   setLang: (l: Lang) => void;
   t: (key: string, vars?: Record<string, string | number>) => string;
+  tr: <T>(value: Bilingual<T>) => T;
 };
 
 const LangContext = createContext<Ctx | null>(null);
-
 const STORAGE_KEY = "cambio:lang";
 
 export function LangProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>("es");
 
   useEffect(() => {
+    // `?lang=en` en la URL tiene prioridad (links compartibles); si no, lo guardado.
+    try {
+      const fromUrl = new URLSearchParams(window.location.search).get("lang");
+      if (fromUrl === "es" || fromUrl === "en") {
+        setLangState(fromUrl);
+        localStorage.setItem(STORAGE_KEY, fromUrl);
+        return;
+      }
+    } catch {
+      /* noop */
+    }
     try {
       const saved = localStorage.getItem(STORAGE_KEY) as Lang | null;
       if (saved === "es" || saved === "en") setLangState(saved);
     } catch {
-      /* storage bloqueado: se queda en 'es' */
+      /* storage bloqueado: queda en 'es' */
     }
   }, []);
+
+  // Sincroniza el locale de formato (fechas, tiempos relativos) con el idioma, en render para
+  // que el primer paint del cliente ya use el correcto.
+  setFormatLocale(lang);
 
   useEffect(() => {
     if (typeof document !== "undefined") document.documentElement.lang = lang;
@@ -162,14 +203,18 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
 
   const t = useCallback(
     (key: string, vars?: Record<string, string | number>) => {
-      const dict = DICTS[lang];
-      const str = dict[key] ?? ES[key] ?? key;
+      const str = DICTS[lang][key] ?? ES[key] ?? key;
       return interpolate(str, vars);
     },
     [lang],
   );
 
-  const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t]);
+  const tr = useCallback(
+    <T,>(value: Bilingual<T>): T => (lang === "en" ? value.en : value.es),
+    [lang],
+  );
+
+  const value = useMemo(() => ({ lang, setLang, t, tr }), [lang, setLang, t, tr]);
   return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
 }
 

@@ -6,11 +6,11 @@ import { useLang } from "@/lib/i18n";
 import { PAIRS, pairTitle } from "@/lib/pairs";
 
 export function SiteFooter() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-24 border-t border-[var(--color-line)] bg-[var(--color-surface)]">
+    <footer className="mt-28 border-t border-[var(--color-line)] bg-[var(--color-surface)]">
       <div className="wrap grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-2 font-semibold">
@@ -22,7 +22,7 @@ export function SiteFooter() {
             </span>
             {SITE.name}
           </div>
-          <p className="mt-3 max-w-xs text-sm text-[var(--color-muted)]">{t("common.poweredBy")}</p>
+          <p className="mt-3 max-w-xs text-sm text-[var(--color-muted)]">{t("footer.dataNote")}</p>
         </div>
 
         <div>
@@ -31,7 +31,7 @@ export function SiteFooter() {
             {PAIRS.slice(0, 5).map((p) => (
               <li key={p.slug}>
                 <Link href={`/convertir/${p.slug}`} className="text-[var(--color-muted)] hover:text-[var(--color-ink)]">
-                  {pairTitle(p)}
+                  {pairTitle(p, lang)}
                 </Link>
               </li>
             ))}
@@ -48,7 +48,7 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h2 className="eyebrow mb-3">{t("common.madeBy")}</h2>
+          <h2 className="eyebrow mb-3">{t("footer.madeBy")}</h2>
           {SITE.madeBy.label && (
             <a
               href={SITE.madeBy.href}
@@ -64,7 +64,7 @@ export function SiteFooter() {
 
       <div className="wrap flex flex-col gap-3 border-t border-[var(--color-line)] py-6 text-xs text-[var(--color-muted)] sm:flex-row sm:items-center sm:justify-between">
         <p>© {year} {SITE.name}. {t("footer.rights")}</p>
-        <p className="max-w-lg">{t("common.disclaimer")}</p>
+        <p className="max-w-lg">{t("footer.disclaimer")}</p>
       </div>
     </footer>
   );

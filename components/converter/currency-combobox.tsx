@@ -15,7 +15,7 @@ type Props = {
 };
 
 export function CurrencyCombobox({ value, onChange, label, exclude = [] }: Props) {
-  const { t } = useLang();
+  const { t, tr } = useLang();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
@@ -29,7 +29,11 @@ export function CurrencyCombobox({ value, onChange, label, exclude = [] }: Props
     const q = query.trim().toLowerCase();
     return CURRENCIES.filter((c) => !exclude.includes(c.code)).filter((c) => {
       if (!q) return true;
-      return c.code.toLowerCase().includes(q) || c.name.toLowerCase().includes(q);
+      return (
+        c.code.toLowerCase().includes(q) ||
+        c.name.es.toLowerCase().includes(q) ||
+        c.name.en.toLowerCase().includes(q)
+      );
     });
   }, [query, exclude]);
 
@@ -78,13 +82,13 @@ export function CurrencyCombobox({ value, onChange, label, exclude = [] }: Props
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label={`${label}: ${current.name}`}
+        aria-label={`${label}: ${tr(current.name)}`}
         className="flex w-full items-center gap-2.5 rounded-[var(--radius-field)] border border-[var(--color-line-strong)] bg-[var(--color-surface)] px-3 py-2.5 text-left transition-colors hover:border-[var(--color-ink)]"
       >
         <Flag code={current.code} size="lg" />
         <span className="flex min-w-0 flex-col">
           <span className="font-mono text-sm font-semibold">{current.code}</span>
-          <span className="truncate text-xs text-[var(--color-muted)]">{current.name}</span>
+          <span className="truncate text-xs text-[var(--color-muted)]">{tr(current.name)}</span>
         </span>
         <span className="ml-auto text-[var(--color-muted)]" aria-hidden>▾</span>
       </button>
@@ -129,7 +133,7 @@ export function CurrencyCombobox({ value, onChange, label, exclude = [] }: Props
               >
                 <Flag code={c.code} />
                 <span className="font-mono font-semibold">{c.code}</span>
-                <span className="truncate text-[var(--color-muted)]">{c.name}</span>
+                <span className="truncate text-[var(--color-muted)]">{tr(c.name)}</span>
                 {c.code === value && <span className="ml-auto text-[var(--color-brand)]" aria-hidden>✓</span>}
               </li>
             ))}

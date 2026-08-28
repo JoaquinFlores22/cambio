@@ -1,21 +1,21 @@
 "use client";
 
-import { useLang } from "@/lib/i18n";
+import { useLang, type Bilingual } from "@/lib/i18n";
 import { sortArHouses, type ArRates } from "@/lib/rates";
 import { formatNumber, formatRelative } from "@/lib/format";
 
-const LABEL: Record<string, string> = {
-  oficial: "Oficial",
-  blue: "Blue",
-  bolsa: "MEP (Bolsa)",
-  contadoconliqui: "CCL",
-  tarjeta: "Tarjeta / Turista",
-  cripto: "Cripto",
-  mayorista: "Mayorista",
+const LABEL: Record<string, Bilingual> = {
+  oficial: { es: "Oficial", en: "Official" },
+  blue: { es: "Blue", en: "Blue" },
+  bolsa: { es: "MEP (Bolsa)", en: "MEP" },
+  contadoconliqui: { es: "CCL", en: "CCL" },
+  tarjeta: { es: "Tarjeta / Turista", en: "Card / Tourist" },
+  cripto: { es: "Cripto", en: "Crypto" },
+  mayorista: { es: "Mayorista", en: "Wholesale" },
 };
 
 export function ArRatesPanel({ ar }: { ar: ArRates | null }) {
-  const { t } = useLang();
+  const { t, tr } = useLang();
   if (!ar || ar.dolares.length === 0) return null;
 
   const houses = sortArHouses(ar.dolares);
@@ -25,7 +25,7 @@ export function ArRatesPanel({ ar }: { ar: ArRates | null }) {
     <div className="card p-5 sm:p-7">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-lg font-semibold">{t("ar.title")}</h2>
-        <span className="text-xs text-[var(--color-muted)]">
+        <span className="text-xs text-[var(--color-muted)]" suppressHydrationWarning>
           {t("conv.updated")} {formatRelative(ar.updated)}
         </span>
       </div>
@@ -40,7 +40,7 @@ export function ArRatesPanel({ ar }: { ar: ArRates | null }) {
           return (
             <div key={h.casa} className="rounded-[var(--radius-field)] border border-[var(--color-line)] bg-[var(--color-bg)] p-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold">{LABEL[h.casa] ?? h.nombre}</span>
+                <span className="text-sm font-semibold">{LABEL[h.casa] ? tr(LABEL[h.casa]) : h.nombre}</span>
                 {spread != null && (
                   <span
                     className="tnum text-xs font-medium"

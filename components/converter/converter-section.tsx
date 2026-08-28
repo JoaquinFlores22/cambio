@@ -1,20 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useLang } from "@/lib/i18n";
 import { useRates } from "@/lib/use-rates";
+import { makeSlug, pairTitle } from "@/lib/pairs";
 import { ConverterCard } from "./converter-card";
 import { ConversionTable } from "./conversion-table";
 import { RateChart } from "./rate-chart";
 import { ArRatesPanel } from "./ar-rates-panel";
+import { ArRatesStrip } from "./ar-rates-strip";
 
 type Props = {
   initialFrom?: string;
   initialTo?: string;
   initialAmount?: number;
-  /** lee ?amount= / ?from= / ?to= al montar (solo para la home / links de la tabla) */
+  /** lee ?amount= / ?from= / ?to= al montar (home y links de la tabla) */
   readQuery?: boolean;
-  showChart?: boolean;
-  showTable?: boolean;
+  /** "home" muestra una vista compacta; "pair" muestra todo el detalle */
+  variant?: "home" | "pair";
 };
 
 export function ConverterSection({
@@ -22,9 +26,9 @@ export function ConverterSection({
   initialTo = "ARS",
   initialAmount = 1000,
   readQuery = false,
-  showChart = true,
-  showTable = true,
+  variant = "pair",
 }: Props) {
+  const { t, lang } = useLang();
   const [from, setFrom] = useState(initialFrom);
   const [to, setTo] = useState(initialTo);
   const [amount, setAmount] = useState(initialAmount);
@@ -43,6 +47,7 @@ export function ConverterSection({
   }, []);
 
   const touchesArs = from === "ARS" || to === "ARS";
+  const pairSlug = makeSlug(from, to);
 
   return (
     <div className="space-y-6">
@@ -55,9 +60,25 @@ export function ConverterSection({
         setTo={setTo}
         live={live}
       />
-      {touchesArs && <ArRatesPanel ar={live.ar} />}
-      {showChart && <RateChart from={from} to={to} />}
-      {showTable && <ConversionTable from={from} to={to} rates={live.rates.rates} />}
+
+      {variant === "home" ? (
+        <>
+          {touchesArs && <ArRatesStrip ar={live.ar} pairSlug={pairSlug} />}
+          <RateChart from={from} to={to} />
+          <Link
+            href={`/convertir/${pairSlug}`}
+            className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-brand-strong)] hover:underline"
+          >
+            {t("conv.seeDetail", { pair: pairTitle({ from, to }, lang) })} →
+          </Link>
+        </>
+      ) : (
+        <>
+          {touchesArs && <ArRatesPanel ar={live.ar} />}
+          <RateChart from={from} to={to} />
+          <ConversionTable from={from} to={to} rates={live.rates.rates} />
+        </>
+      )}
     </div>
   );
 }

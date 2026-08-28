@@ -25,9 +25,16 @@ const FAVICON =
 
 // Host puramente estático: la CSP real (header HTTP) no se puede setear. Esta <meta> cubre lo
 // que el navegador respeta vía meta. `connect-src` habilita las fuentes de cotizaciones.
+// React en modo desarrollo usa eval() para features de debugging; en producción nunca.
+// Por eso 'unsafe-eval' se agrega solo en dev — el build servido queda con la CSP estricta.
+const scriptSrc =
+  process.env.NODE_ENV === "development"
+    ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    : "script-src 'self' 'unsafe-inline'";
+
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  scriptSrc,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self' data:",
