@@ -7,7 +7,8 @@ export const SITE = {
   description:
     "Conversor de divisas con el tipo medio de mercado, gráfico histórico y todas las cotizaciones del dólar en Argentina (oficial, blue, MEP). Se actualiza solo cada minuto. Sin comisiones, sin letra chica.",
   // URL de producción. Cambiar por el dominio del cliente al entregar.
-  url: "https://cambio.example",
+  // (Demo actual del portfolio de Estudio Flores.)
+  url: "https://joaquinflores22.github.io/cambio",
   locale: "es_AR",
   // Crédito del estudio en el footer. Vaciar si el cliente no lo quiere.
   madeBy: { label: "Estudio Flores", href: "https://estudioflores.example" },

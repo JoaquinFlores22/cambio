@@ -5,11 +5,14 @@ import type { NextConfig } from "next";
 // API routes, sin optimización de imágenes en servidor. Las cotizaciones se piden por fetch
 // desde el cliente y se hornea un snapshot en build time (ver scripts/fetch-rates.mjs).
 //
-// Si el cliente lo aloja en un subdirectorio (ej. GitHub Pages project pages), descomentar
-// `basePath` con la ruta correspondiente — Next antepone ese prefijo a cada link y asset.
+// Si se aloja en un subdirectorio (GitHub Pages project pages), setear NEXT_PUBLIC_BASE_PATH
+// (ej. "/cambio") — Next antepone ese prefijo a cada link y asset. En dev / deploy a la raíz
+// queda vacío. El workflow de Pages (.github/workflows/deploy.yml) lo define.
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const nextConfig: NextConfig = {
   output: "export",
-  // basePath: "/cambio",
+  basePath: basePath || undefined,
   turbopack: { root: __dirname },
   images: {
     unoptimized: true,
