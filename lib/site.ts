@@ -7,11 +7,12 @@ export const SITE = {
   description:
     "Conversor de divisas con el tipo medio de mercado, gráfico histórico y todas las cotizaciones del dólar en Argentina (oficial, blue, MEP). Se actualiza solo cada minuto. Sin comisiones, sin letra chica.",
   // URL de producción. Cambiar por el dominio del cliente al entregar.
-  // (Demo actual del portfolio de Estudio Flores.)
-  url: "https://joaquinflores22.github.io/cambio",
+  // Demo del portfolio de Estudio Flores: se sirve dentro de JF-Desarrollo-Web
+  // (web/public/cambio/) y Vercel lo deploya al pushear main.
+  url: "https://desarrollodigital.vercel.app/cambio",
   locale: "es_AR",
   // Crédito del estudio en el footer. Vaciar si el cliente no lo quiere.
-  madeBy: { label: "Estudio Flores", href: "https://estudioflores.example" },
+  madeBy: { label: "Estudio Flores", href: "https://desarrollodigital.vercel.app" },
   // Contacto para la demo / venta.
   whatsapp: "5491169024270",
 } as const;

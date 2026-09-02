@@ -10,7 +10,7 @@
     "prebuild": "node scripts/fetch-rates.mjs",
     "build": "next build",
     "postbuild": "node scripts/fix-export-prefetch.js",
-    "deploy": "node scripts/deploy-pages.mjs",
+    "deploy": "node scripts/deploy.mjs",
     "start": "next start",
     "lint": "eslint"
   },
